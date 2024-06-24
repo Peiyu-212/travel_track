@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-environ = "*"
+psycopg2-binary = "*"
+pandas = "*"
+matplotlib = "*"
+astroquery = "*"
+geopy = "*"
+openpyxl-style-writer = "*"
+django-filter = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
+python_full_version = "3.12.2"
