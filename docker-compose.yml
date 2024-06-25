@@ -1,0 +1,43 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile.app
+      args:
+        - ENV=.env
+    env_file: ./.env
+    restart: unless-stopped
+    networks:
+      - internal
+    depends_on:
+      - db
+    expose:
+      - ${DOCKER_UWSGI_INTERNAL_PORT}
+    volumes:
+      - type: volume
+        source: log
+        target: /log
+        volume:
+          nocopy: false
+  db:
+    image: postgres:14
+    restart: always
+    container_name: ${DOCKER_DB_CONTAINER}
+    environment:
+      POSTGRES_USER: ${DOCKER_DB_USER}
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD}
+      POSTGRES_DB: ${DOCKER_DB_DATABASE}
+    env_file: ./.env
+    networks:
+      - internal
+    volumes:
+      - ./db/postgresql:/var/lib/postgresql/data/
+    ports:
+      - "${DOCKER_DB_PORT}:${DOCKER_DB_INNER_PORT}"
+
+networks:
+  internal:
+    name: travel_track
+
+volumes:
+  log:
